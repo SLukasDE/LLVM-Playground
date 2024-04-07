@@ -1,0 +1,5 @@
+digraph "CFG for 'main' function" {
+	label="CFG for 'main' function";
+
+	Node0x1454b40 [shape=record,label="{%0:\l  %some-pointer = alloca i32\l  store i32 42, i32* %some-pointer\l  store i32 54, i32* %some-pointer\l  %retval = load i32, i32* %some-pointer\l  ret i32 %retval\l}"];
+}
