@@ -15,6 +15,21 @@ class PrintClasses : public clang::RecursiveASTVisitor<PrintClasses>
 {
 public:
 	PrintClasses();
+	/*
+		bool TraverseDecl(clang::Decl* decl) {
+			// your logic here
+			// Return false to stop the AST analyzing
+			return RecursiveASTVisitor<ClassSource>::TraverseDecl(decl); // Forward to base class
+		}
+		bool TraverseStmt(clang::Stmt* statement) {
+			// your logic here
+			return RecursiveASTVisitor<ClassSource>::TraverseStmt(statement);
+		}
+		bool TraverseType(clang::QualType qualType) {
+			// your logic here
+			return RecursiveASTVisitor<ClassSource>::TraverseType(qualType);
+		}
+	*/
 
 	bool VisitCXXRecordDecl(clang::CXXRecordDecl* decl);
 
