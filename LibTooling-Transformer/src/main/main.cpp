@@ -15,6 +15,7 @@ int main(int argc, const char **argv) {
 
 	const std::vector<std::string>& sourcePathList = optionsParser.getSourcePathList();
 	llvm::outs() << sourcePathList.size() << " files in source path list.\n";
+
 	for(const std::string& sourceFile : sourcePathList) {
 		if(myclang::Helper::fileExists(sourceFile) == false) {
 			llvm::errs() << "File: " << sourceFile << " does not exist!\n";
@@ -23,6 +24,7 @@ int main(int argc, const char **argv) {
 
 		llvm::outs() << "File to process: " << sourceFile << "\n";
 		std::string sourcetxt = myclang::Helper::getSourceCode(sourceFile);
+
 		std::vector<clang::tooling::CompileCommand> compileCommands = optionsParser.getCompilations().getCompileCommands(clang::tooling::getAbsolutePath(sourceFile));
 
 		std::vector<std::string> compileArgs = myclang::Helper::getCompileArgs(compileCommands);

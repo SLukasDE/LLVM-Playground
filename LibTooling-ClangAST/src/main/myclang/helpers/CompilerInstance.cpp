@@ -8,6 +8,10 @@
 #include "clang/Sema/Sema.h"                               // clang::Sema
 #include "clang/Serialization/PCHContainerOperations.h"    // clang::PCHContainerOperations
 
+//#define MEM_BUFFER_FILE
+#ifdef MEM_BUFFER_FILE
+#include "llvm/Support/MemoryBuffer.h"
+#endif
 
 namespace myclang {
 namespace helpers {
@@ -92,10 +96,14 @@ CompilerInstance::CompilerInstance(const std::string& inputFileStr) {
 
 	compilerInstance.createASTContext();
 
+#ifdef MEM_BUFFER_FILE
+	std::unique_ptr<llvm::MemoryBuffer> memBuffer =	llvm::MemoryBuffer::getMemBuffer("StringRef InputData");
+	clang::FileID fileId = sourceManager.createFileID(std::move(memBuffer));
+#else
 	llvm::ErrorOr<const clang::FileEntry *> inputFile = fileManager.getFile(inputFileStr);
-
-	sourceManager.setMainFileID(sourceManager.createFileID(inputFile.get(), clang::SourceLocation(), clang::SrcMgr::C_User));
-	//sourceManager.createMainFileID(inputFile);
+	clang::FileID fileId = sourceManager.createFileID(inputFile.get(), clang::SourceLocation(), clang::SrcMgr::C_User);
+#endif
+	sourceManager.setMainFileID(fileId);
 
 	compilerInstance.getDiagnosticClient().BeginSourceFile(compilerInstance.getLangOpts(), &compilerInstance.getPreprocessor());
 

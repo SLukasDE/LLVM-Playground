@@ -1,13 +1,25 @@
 #include "myclang/Helper.h"
 
 #include <fstream>
+/*
+#include "clang/Tooling/Core/Replacement.h"
 
+const clang::tooling::FormatStyle* Style;
+clang::tooling::Lexer* Lex;
+clang::tooling::SourceManager* SourceMgr;
+clang::tooling::CharSourceRange* Ranges;
+
+clang::tooling::Replacements reformat(const clang::tooling::FormatStyle &Style, clang::tooling::Lexer &Lex,
+		clang::tooling::SourceManager &SourceMgr,
+                               std::vector<clang::tooling::CharSourceRange> Ranges);
+*/
 namespace myclang {
 
 std::vector<std::string> Helper::getSyntaxOnlyToolArgs(const std::vector<std::string>& extraArgs, llvm::StringRef fileName) {
 	std::vector<std::string> args;
 
-	args.push_back("clang-tool");
+	args.push_back("transformer");
+//	args.push_back("clang-tool");
 	args.push_back("-fsyntax-only");
 
 	args.insert(args.end(), extraArgs.begin(), extraArgs.end());
@@ -41,8 +53,8 @@ bool Helper::fileExists(const std::string& file) {
 std::vector<std::string> Helper::getCompileArgs(const std::vector<clang::tooling::CompileCommand>& compileCommands) {
 	std::vector<std::string> compileArgs;
 
-	for(auto &cmd : compileCommands) {
-		for(auto &arg : cmd.CommandLine) {
+	for(const auto& cmd : compileCommands) {
+		for(const auto& arg : cmd.CommandLine) {
 			compileArgs.push_back(arg);
 		}
 	}
